@@ -1,5 +1,6 @@
 package com.learning.jpa.entity;
 
+import com.learning.jpa.entity.enums.DeliveryStatus;
 import com.learning.jpa.entity.enums.OrderStatus;
 import lombok.Data;
 import lombok.Getter;
@@ -31,6 +32,10 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    @OneToOne
+    @JoinColumn(name = "DELIVERY_ID")
+    private Delivery delivery;
+
     public void setMember(Member member) {
         if (this.member != null) {
             this.member.getOrders().remove(this);
@@ -38,5 +43,10 @@ public class Order {
 
         this.member = member;
         member.getOrders().add(this);
+    }
+
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
+        delivery.setOrder(this);
     }
 }
